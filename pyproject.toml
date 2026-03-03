@@ -8,3 +8,13 @@ dependencies = []
 
 [project.scripts]
 labs = "run:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.0.0",
+    "mypy>=1.0.0",
+]
+
+[tool.uv]
+# Проект не является пакетом, а только коллекцией скриптов
+package = false
