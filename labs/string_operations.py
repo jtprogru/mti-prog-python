@@ -1,73 +1,108 @@
-# string_operations.py
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-import re
+"""
+Операции со строками.
+
+Модуль предоставляет функции для анализа и обработки текста:
+- Подсчёт гласных и согласных букв
+- Капитализация слов
+- Удаление знаков препинания
+
+Поддерживаются латинские и русские буквы.
+"""
+
 import string
+from typing import Set
+
+# Гласные буквы (латинские и русские)
+VOWELS: Set[str] = set("aeiouAEIOUаеёиоуыэюяАЕЁИОУЫЭЮЯ")
+
+# Все буквы (латинские и русские)
+ALL_LETTERS: Set[str] = set(
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+    "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+)
+
+# Согласные буквы (вычисляются как разность)
+CONSONANTS: Set[str] = ALL_LETTERS - VOWELS
+
+# Знаки препинания (ASCII + русские)
+ASCII_PUNCTUATION: Set[str] = set(string.punctuation)
+RUSSIAN_PUNCTUATION: Set[str] = set("«»…—‐–‚‛""№")
+ALL_PUNCTUATION: Set[str] = ASCII_PUNCTUATION | RUSSIAN_PUNCTUATION
 
 
 def count_vowels(text: str) -> int:
     """
-    Подсчитывает количество гласных букв в строке.
-    Поддерживаются латинские и русские гласные.
+    Подсчёт количества гласных букв в строке.
+
+    Args:
+        text: Исходная строка для анализа.
+
+    Returns:
+        Количество гласных букв.
     """
-    vowels = "aeiouAEIOUаеёиоуыэюяАЕЁИОУЫЭЮЯ"
-    return sum(1 for ch in text if ch in vowels)
+    return sum(1 for char in text if char in VOWELS)
 
 
 def count_consonants(text: str) -> int:
     """
-    Подсчитывает количество согласных букв в строке.
-    Учитываются только буквы, не являющиеся гласными.
+    Подсчёт количества согласных букв в строке.
+
+    Args:
+        text: Исходная строка для анализа.
+
+    Returns:
+        Количество согласных букв.
     """
-    vowels = "aeiouAEIOUаеёиоуыэюяАЕЁИОУЫЭЮЯ"
-    letters = (
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
-        "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
-    )
-    return sum(1 for ch in text if ch in letters and ch not in vowels)
+    return sum(1 for char in text if char in CONSONANTS)
 
 
 def capitalize_words(text: str) -> str:
     """
-    Делает первую букву каждого слова заглавной.
+    Капитализация первого символа каждого слова.
+
+    Args:
+        text: Исходная строка.
+
+    Returns:
+        Строка с капитализированными словами.
     """
+    if not text:
+        return text
     return ' '.join(word.capitalize() for word in text.split())
 
 
 def remove_punctuation(text: str) -> str:
     """
-    Удаляет все знаки препинания из строки.
+    Удаление всех знаков препинания из строки.
+
+    Args:
+        text: Исходная строка.
+
+    Returns:
+        Строка без знаков препинания.
     """
-    # Удаляем ASCII‑знаки препинания
-    translator = str.maketrans('', '', string.punctuation)
-    cleaned = text.translate(translator)
-    # Удаляем русские знаки препинания
-    russian_punct = "«»…—‐–‚‛“”№"
-    translator_ru = str.maketrans('', '', russian_punct)
-    cleaned = cleaned.translate(translator_ru)
-    return cleaned
+    if not text:
+        return text
+    return ''.join(char for char in text if char not in ALL_PUNCTUATION)
 
 
-def main():
-    # Примерная строка для демонстрации работы функций
+def main() -> None:
+    """
+    Демонстрация работы функций модуля.
+
+    Выполняет примерную обработку строки и выводит результаты.
+    """
     sample_text = "Привет, мир! Hello, world!!!"
 
-    # Подсчёт гласных
-    vowels_count = count_vowels(sample_text)
     print(f"Исходная строка: {sample_text}")
-    print(f"Количество гласных: {vowels_count}")
-
-    # Подсчёт согласных
-    consonants_count = count_consonants(sample_text)
-    print(f"Количество согласных: {consonants_count}")
-
-    # Капитализация слов
-    capitalized = capitalize_words(sample_text.lower())
-    print(f"Капитализация слов: {capitalized}")
-
-    # Удаление знаков препинания
-    no_punct = remove_punctuation(sample_text)
-    print(f"Без знаков препинания: {no_punct}")
+    print(f"Количество гласных: {count_vowels(sample_text)}")
+    print(f"Количество согласных: {count_consonants(sample_text)}")
+    print(f"Капитализация слов: {capitalize_words(sample_text.lower())}")
+    print(f"Без знаков препинания: {remove_punctuation(sample_text)}")
 
 
 if __name__ == "__main__":
