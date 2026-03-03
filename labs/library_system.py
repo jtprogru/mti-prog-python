@@ -1,6 +1,11 @@
 # library_system.py
 import json
 from datetime import datetime, timedelta
+from pathlib import Path
+
+# Путь к данным относительно корня проекта
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_FILE = PROJECT_ROOT / "data" / "library_data.json"
 
 class LibrarySystem:
     def __init__(self):
@@ -130,7 +135,9 @@ class LibrarySystem:
         else:
             print("\nНи одна книга не просрочена.")
 
-    def save_to_file(self, filename='library_data.json'):
+    def save_to_file(self, filename=None):
+        if filename is None:
+            filename = DATA_FILE
         data = {
             'books': self.books,
             'readers': self.readers,
@@ -141,7 +148,9 @@ class LibrarySystem:
             json.dump(data, f, ensure_ascii=False, indent=4)
         print(f"Данные сохранены в {filename}")
 
-    def load_from_file(self, filename='library_data.json'):
+    def load_from_file(self, filename=None):
+        if filename is None:
+            filename = DATA_FILE
         try:
             with open(filename, 'r', encoding='utf-8') as f:
                 data = json.load(f)

@@ -3,8 +3,11 @@
 import json
 from datetime import datetime, timedelta
 import os
+from pathlib import Path
 
-DATA_FILE = "tasks.json"
+# Путь к данным относительно корня проекта
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_FILE = PROJECT_ROOT / "data" / "tasks.json"
 
 # ------------------------------
 # Работа с задачами (JSON)

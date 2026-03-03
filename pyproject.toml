@@ -1,7 +1,10 @@
 [project]
 name = "mti-prog-python"
 version = "0.1.0"
-description = "Add your description here"
+description = "Коллекция учебных лабораторных работ по программированию на Python"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []
+
+[project.scripts]
+labs = "run:main"
